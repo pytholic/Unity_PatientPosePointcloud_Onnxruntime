@@ -10,18 +10,19 @@ using aus.Extension;
 using aus.Geometry;
 using System.Linq;
 
-public class HeadPredOnnxRuntimeMultiple : MonoBehaviour
+public class tester : MonoBehaviour
 {
     // Start is called before the first frame update
     public WavefrontObjMesh objLoader;
-    //string modelPath = @"/home/trojan/Downloads/pointnet_classification.onnx";
-    string modelPath = Application.streamingAssetsPath + "/model/pointnet_classification.onnx";
-    
+    string modelPath = @"/home/trojan/Downloads/pointnet_classification.onnx";
+
     private string[] labels = {"head_left", "head_right"}; 
     private string prediction;
 
     public string path = Application.streamingAssetsPath + "/mesh";
     public string[] object_list;
+    //public List<DenseTensor<float>> input_list = new List<DenseTensor<float>>();
+    public List<float[]> input_list = new List<float[]>();
     // Start is called before the first frame update
     private async void Start()
     {
@@ -49,53 +50,53 @@ public class HeadPredOnnxRuntimeMultiple : MonoBehaviour
             // Convert to tensor
             var input = pcd_to_tensor(sample);
             float[] inputData = input.ToArray();
-
+            input_list.Add(inputData);
             # endregion
-
-        //Debug.Log(input_list.Count);
-            
-            # region Inference session
-            // Optional : Create session options and set the graph optimization level for the session
-            SessionOptions options = new SessionOptions();
-            options.GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_EXTENDED;
-    
-            using (var session = new InferenceSession(modelPath, options))
-            {
-                var inputMeta = session.InputMetadata;
-                var (n, w, c) = GetImageShape(inputMeta.First().Value);
-                //Debug.Log($"input shape is ({n}, {w}, {c})"); // should return (-1, 2048, 3) for my input
-                var container = new List<NamedOnnxValue>();                
-
-                foreach (var name in inputMeta.Keys)
-                {
-                    var tensor = new DenseTensor<float>(inputData, new int[] {1, 2048, 3});
-                    container.Add(NamedOnnxValue.CreateFromTensor<float>(name, tensor));
-                }
-            
-        
-                // Run the inference
-                using (var results = session.Run(container))  // results is an IDisposableReadOnlyCollection<DisposableNamedOnnxValue> container  
-                {
-                    // dump the results
-                    foreach(var r in results)
-                    {
-                        //Debug.Log($"Output for {r.Name}");
-                        //Debug.Log(r.AsTensor<float>().GetArrayString());
-
-                        // get max index
-                        var temp = r.AsTensor<float>().ToList();
-                        var maxIndex = (int)temp.IndexOf(temp.Max());
-                        //Debug.Log($"Argmax index = {maxIndex}");
-
-                        // get prediction class
-                        prediction = labels[maxIndex];
-                        Debug.Log($"Network prediction for object {i} is: {prediction}");
-                    }
-                }
-            }
-            //Debug.Log(container.Count);
-            # endregion 
         }
+        //Debug.Log(input_list[0].ToTensor().Length);
+        //Debug.Log(input_list.ToArray().;
+            
+        // # region Inference session
+        // // Optional : Create session options and set the graph optimization level for the session
+        // SessionOptions options = new SessionOptions();
+        // options.GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_EXTENDED;
+
+        // using (var session = new InferenceSession(modelPath, options))
+        // {
+        //     var inputMeta = session.InputMetadata;
+        //     var (n, w, c) = GetImageShape(inputMeta.First().Value);
+        //     //Debug.Log($"input shape is ({n}, {w}, {c})"); // should return (-1, 2048, 3) for my input
+        //     var container = new List<NamedOnnxValue>();                
+
+        //     foreach (var name in inputMeta.Keys)
+        //     {
+        //         var tensor = new DenseTensor<float>(inputData, new int[] {1, 2048, 3});
+        //         container.Add(NamedOnnxValue.CreateFromTensor<float>(name, tensor));
+        //     }
+        
+    
+        //     // Run the inference
+        //     using (var results = session.Run(container))  // results is an IDisposableReadOnlyCollection<DisposableNamedOnnxValue> container  
+        //     {
+        //         // dump the results
+        //         foreach(var r in results)
+        //         {
+        //             //Debug.Log($"Output for {r.Name}");
+        //             //Debug.Log(r.AsTensor<float>().GetArrayString());
+
+        //             // get max index
+        //             var temp = r.AsTensor<float>().ToList();
+        //             var maxIndex = (int)temp.IndexOf(temp.Max());
+        //             //Debug.Log($"Argmax index = {maxIndex}");
+
+        //             // get prediction class
+        //             prediction = labels[maxIndex];
+        //             Debug.Log($"Network prediction for object {i} is: {prediction}");
+        //         }
+        //     }
+        // }
+        // //Debug.Log(container.Count);
+        // # endregion 
     }
 
     public static (int channel, int height, int width) GetImageShape(NodeMetadata sessionMeta)
