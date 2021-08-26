@@ -217,6 +217,8 @@ GameObject:
   - component: {fileID: 476436818}
   - component: {fileID: 476436817}
   - component: {fileID: 476436819}
+  - component: {fileID: 476436820}
+  - component: {fileID: 476436821}
   m_Layer: 0
   m_Name: model
   m_TagString: Untagged
@@ -258,12 +260,42 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476436816}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fdfd65eaa15992a5b8a35a563b82afe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objLoader: {fileID: 1318378101}
+--- !u!114 &476436820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476436816}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87781dfde404bce76904851ac1156a5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objLoader: {fileID: 1318378101}
+  path: /home/trojan/unity/Unity_HeadLocationPointcloud_Onnxruntime/Assets/StreamingAssets/mesh
+  object_list: []
+--- !u!114 &476436821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476436816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1782df94b764217f0a3d4a37ab1a849f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objLoader: {fileID: 1318378101}
+  path: /home/trojan/unity/Unity_HeadLocationPointcloud_Onnxruntime/Assets/StreamingAssets/mesh
+  object_list: []
 --- !u!1 &642312486
 GameObject:
   m_ObjectHideFlags: 0
