@@ -14,8 +14,8 @@ public class HeadPredOnnxRuntime : MonoBehaviour
 {
     // Start is called before the first frame update
     public WavefrontObjMesh objLoader;
-    string modelPath = @"/home/trojan/Downloads/pointnet_classification.onnx";
-
+    //string modelPath = @"/home/trojan/Downloads/pointnet_classification.onnx";
+    string modelPath = Application.streamingAssetsPath + "/model/pointnet_classification.onnx";
     private string[] labels = {"head_left", "head_right"}; 
     private string prediction;
 
